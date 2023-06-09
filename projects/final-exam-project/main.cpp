@@ -1,8 +1,15 @@
 #include<iostream>
 #include<string>
 #include<vector>
-
+#include<iomanip>
 using namespace std;
+/* 
+    File: main.cpp 
+    Description: this is a program that ouputs a chart of Mountains
+    Author: Angel Ruiz
+    Email: angelr9165@student.vvc.edu 
+    Date: 6/8/2023 
+*/
 class Mountain {
     public:
     void setName(string mountain);
@@ -11,7 +18,9 @@ class Mountain {
     string getCountry();
     void setElevation(int feet);
     int getElevation();
-    int toMeters();
+    void toMeters(int ft);
+    double getMeters();
+    void print();
 
     private:
     string name;
@@ -44,15 +53,25 @@ int Mountain::getElevation() {
     return elevation;
 }
 
-int Mountain::toMeters() {
-    meters = elevation/3.2808;
+void Mountain::toMeters(int ft) {
+    meters = ft * 1/3.2808;
+}
+
+double Mountain::getMeters() {
     return meters;
 }
 
+void Mountain::print() {
+    cout << left << setw(20) << name << setw(18) << country << setw(18)<< elevation << setw(18) << meters << endl;
+}
+
 int main() {
+
 unsigned int i;
 int minElevation;
+string smallestMountain;
 vector<Mountain> mountainList;
+
 //MOUNTAINS
 Mountain Chimborazo;
 Mountain Matterhorn;
@@ -67,14 +86,14 @@ Chimborazo.setName("Chimborazo");
 Matterhorn.setName("Matterhorn");
 Olympus.setName("Olympus");
 Everest.setName("Everest");
-Adirondacks.setName("Mount Marcy - Adirondacks");
-Mitchell.setName("Mount Mitchell - Blue Ridge");
+Adirondacks.setName("Mount Marcy");
+Mitchell.setName("Mount Mitchell");
 Zugspitze.setName("Zugspitze");
 
 //SET COUNTRIES
 Chimborazo.setCountry("Ecuador");
 Matterhorn.setCountry("Switzerland");
-Olympus.setCountry("Greece (Macedonia)");
+Olympus.setCountry("Greece");
 Everest.setCountry("Nepal");
 Adirondacks.setCountry("United States");
 Mitchell.setCountry("United States");
@@ -89,6 +108,15 @@ Adirondacks.setElevation(5344);
 Mitchell.setElevation(6684);
 Zugspitze.setElevation(9719);
 
+//TO METERS
+Chimborazo.toMeters(20549);
+Matterhorn.toMeters(14692);
+Olympus.toMeters(9573);
+Everest.toMeters(29029);
+Adirondacks.toMeters(5344);
+Mitchell.toMeters(6684);
+Zugspitze.toMeters(9719);
+
 //ADD TO VECTOR
 mountainList.push_back(Chimborazo);
 mountainList.push_back(Matterhorn);
@@ -98,11 +126,25 @@ mountainList.push_back(Adirondacks);
 mountainList.push_back(Mitchell);
 mountainList.push_back(Zugspitze);
 
-minElevation = 0;
+cout << "Mountain         " 
+<< "   Country         " 
+<< "  Elevation (FT)    Elevation(MTRS)" << endl;
+cout << "--------------------------------------------------------------------" << endl;
 for(i=0; i < mountainList.size(); i++) {
-    if(mountainList.at(i).getElevation() > minElevation) {
-        minElevation = mountainList.at(i);
+    mountainList.at(i).print();
+}
+
+minElevation = mountainList.at(0).getElevation();
+
+for(i=0; i < mountainList.size(); i++) {
+    if(mountainList.at(i).getElevation() < minElevation) {
+        minElevation = mountainList.at(i).getElevation();
+        smallestMountain = mountainList.at(i).getName();
     }
 }
+cout << endl << "Smallest Mountain Name: " << smallestMountain << endl;
+cout << "Smallest Elevation: " << minElevation << endl;
+
+return 0;
 
 }
